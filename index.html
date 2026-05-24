@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Module 3 Reviewer — ITEP 101 Human Computer Interaction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f5f4f0; --surface: #ffffff; --surface2: #f0efe9;
+    --border: rgba(0,0,0,0.1); --border2: rgba(0,0,0,0.18);
+    --text: #1a1916; --text2: #6b6a65; --text3: #9e9d98;
+    --teal: #1D9E75; --teal-light: #E1F5EE; --teal-dark: #085041;
+    --blue: #185FA5; --blue-light: #E6F1FB;
+    --red: #A32D2D; --red-light: #FCEBEB; --red-dark: #501313;
+    --amber-light: #FAEEDA; --amber-dark: #633806;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1916; --surface: #232320; --surface2: #2c2c28;
+      --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.18);
+      --text: #f0efe9; --text2: #9e9d98; --text3: #6b6a65;
+      --teal-light: #0a3d2b; --teal-dark: #9FE1CB;
+      --blue-light: #0c2a4a;
+      --red-light: #3a1212; --red-dark: #F09595;
+      --amber-light: #2e1f05; --amber-dark: #FAC775;
+    }
+  }
+  html { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  body { display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 2rem 1rem 4rem; }
+  .topbar { width: 100%; max-width: 680px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.5rem; }
+  .topbar-logo { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); }
+  .topbar-badge { font-size: 12px; background: var(--teal-light); color: var(--teal-dark); padding: 4px 12px; border-radius: 99px; font-weight: 500; }
+  .hero { width: 100%; max-width: 680px; margin-bottom: 2rem; }
+  .hero h1 { font-size: clamp(26px, 5vw, 36px); font-weight: 600; line-height: 1.2; color: var(--text); letter-spacing: -0.02em; }
+  .hero h1 span { color: var(--teal); }
+  .hero p { font-size: 15px; color: var(--text2); margin-top: 8px; line-height: 1.6; }
+  .progress-wrap { width: 100%; max-width: 680px; margin-bottom: 1.25rem; }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 13px; color: var(--text3); font-family: 'DM Mono', monospace; }
+  .progress-bar-bg { height: 5px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+  .progress-bar { height: 5px; background: var(--teal); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+  .stats { display: flex; gap: 10px; width: 100%; max-width: 680px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .stat { flex: 1; min-width: 80px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; }
+  .stat-val { font-size: 22px; font-weight: 600; color: var(--text); font-family: 'DM Mono', monospace; }
+  .stat-lbl { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .stat.green .stat-val { color: var(--teal); }
+  .stat.red .stat-val { color: var(--red); }
+  .q-card { width: 100%; max-width: 680px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 1.75rem; animation: fadein 0.3s ease; }
+  @keyframes fadein { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .q-type-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 99px; margin-bottom: 14px; }
+  .pill-mc { background: var(--blue-light); color: var(--blue); }
+  .pill-id { background: var(--teal-light); color: var(--teal-dark); }
+  .q-text { font-size: 16px; line-height: 1.65; color: var(--text); margin-bottom: 1.25rem; font-weight: 400; }
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice { text-align: left; background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-sm); padding: 11px 15px; font-size: 14px; color: var(--text); cursor: pointer; transition: all 0.15s ease; line-height: 1.5; font-family: 'DM Sans', sans-serif; }
+  .choice:hover:not(:disabled) { background: var(--surface2); border-color: var(--teal); }
+  .choice.correct { background: var(--teal-light); border-color: var(--teal); color: var(--teal-dark); font-weight: 500; }
+  .choice.wrong { background: var(--red-light); border-color: var(--red); color: var(--red-dark); }
+  .id-row { display: flex; gap: 8px; }
+  .id-input { flex: 1; font-size: 14px; font-family: 'DM Sans', sans-serif; padding: 10px 14px; border: 0.5px solid var(--border2); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+  .id-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(29,158,117,0.15); }
+  .id-input.correct { border-color: var(--teal); background: var(--teal-light); color: var(--teal-dark); }
+  .id-input.wrong { border-color: var(--red); background: var(--red-light); color: var(--red-dark); }
+  .check-btn { background: var(--teal); border: none; border-radius: var(--radius-sm); padding: 10px 20px; font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; color: #fff; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+  .check-btn:hover:not(:disabled) { background: var(--teal-dark); }
+  .check-btn:disabled { opacity: 0.5; cursor: default; }
+  .hint { font-size: 12px; color: var(--text3); margin-top: 6px; }
+  .feedback { margin-top: 14px; font-size: 13px; padding: 10px 14px; border-radius: var(--radius-sm); line-height: 1.6; display: none; }
+  .feedback.correct { background: var(--teal-light); color: var(--teal-dark); display: block; }
+  .feedback.wrong { background: var(--red-light); color: var(--red-dark); display: block; }
+  .explanation { margin-top: 10px; font-size: 13px; padding: 10px 14px; border-radius: var(--radius-sm); line-height: 1.6; background: var(--amber-light); color: var(--amber-dark); display: none; border-left: 3px solid #EF9F27; }
+  .explanation.show { display: block; }
+  .actions { width: 100%; max-width: 680px; display: none; margin-top: 14px; }
+  .next-btn { background: var(--teal); border: none; border-radius: var(--radius-sm); padding: 11px 24px; font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; color: #fff; cursor: pointer; transition: background 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+  .next-btn:hover { background: var(--teal-dark); }
+  .results-card { width: 100%; max-width: 680px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 3rem 2rem; text-align: center; animation: fadein 0.4s ease; }
+  .results-emoji { font-size: 48px; margin-bottom: 12px; }
+  .results-score { font-size: 56px; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--teal); line-height: 1; }
+  .results-denom { font-size: 28px; font-weight: 400; color: var(--text3); }
+  .results-pct { font-size: 18px; font-weight: 500; color: var(--text2); margin-top: 6px; font-family: 'DM Mono', monospace; }
+  .results-msg { font-size: 15px; color: var(--text2); margin: 1.5rem auto; max-width: 420px; line-height: 1.7; }
+  .restart-btn { background: var(--teal); border: none; border-radius: var(--radius-sm); padding: 12px 32px; font-size: 15px; font-weight: 500; font-family: 'DM Sans', sans-serif; color: #fff; cursor: pointer; transition: background 0.15s; display: inline-flex; align-items: center; gap: 8px; }
+  .restart-btn:hover { background: var(--teal-dark); }
+  footer { margin-top: 3rem; font-size: 12px; color: var(--text3); text-align: center; }
+  @media (max-width: 480px) {
+    body { padding: 1.25rem 0.75rem 3rem; }
+    .q-card { padding: 1.25rem; }
+    .id-row { flex-direction: column; }
+    .check-btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="topbar-logo">ITEP 101 · HCI</span>
+  <span class="topbar-badge">Module 3</span>
+</div>
+<div class="hero">
+  <h1>User-Centered<br/><span>Design</span> Reviewer</h1>
+  <p>20 questions · Multiple choice & identification · Shuffled every session</p>
+</div>
+<div class="progress-wrap">
+  <div class="progress-meta">
+    <span class="progress-label" id="prog-label">0 / 20</span>
+    <span class="progress-label" id="prog-pct">0%</span>
+  </div>
+  <div class="progress-bar-bg"><div class="progress-bar" id="pbar" style="width:0%"></div></div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="stat-val" id="s-q">1</div><div class="stat-lbl">Question</div></div>
+  <div class="stat green"><div class="stat-val" id="s-c">0</div><div class="stat-lbl">Correct</div></div>
+  <div class="stat red"><div class="stat-val" id="s-w">0</div><div class="stat-lbl">Wrong</div></div>
+  <div class="stat"><div class="stat-val" id="s-t">20</div><div class="stat-lbl">Total</div></div>
+</div>
+<div id="q-area"></div>
+<div class="actions" id="actions">
+  <button class="next-btn" onclick="next()">Next question <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+</div>
+<footer>Module 3 · ITEP 101 · Human Computer Interaction · User-Centered Design</footer>
+<script>
+const QUESTIONS = [
+  { type:'mc', q:'What does User-Centered Design (UCD) mean?', choices:['Designing based on what the developer prefers','Designing based on what the company wants','Designing based on what USERS need','Designing only for aesthetics'], answer:2, explanation:'UCD means designing a system, app, or product based on what the USERS need — not what the developer or company wants. The user is always at the center of every decision.' },
+  { type:'mc', q:'Which of the following is the CORRECT order of the UCD process?', choices:['Test → Prototype → Understand → Improve → Generate','Understand → Generate → Prototype → Test → Improve','Generate → Understand → Test → Improve → Prototype','Prototype → Test → Understand → Generate → Improve'], answer:1, explanation:'The UCD process follows 5 steps in order: (1) Understand the users, (2) Generate Ideas, (3) Create Prototypes, (4) Test with Users, and (5) Improve. It is an iterative cycle.' },
+  { type:'mc', q:'Who is the pioneer of User-Centered Design described in this module?', choices:['Steve Jobs','Bill Gates','Donald Norman','Jakob Nielsen'], answer:2, explanation:'Donald Norman is one of the pioneers of User-Centered Design. He is known for the principle: "Good design = based on the NEEDS and WANTS of USERS."' },
+  { type:'mc', q:'Which of the following is NOT one of the Core Values of UCD?', choices:['Empathy','Optimism','Perfectionism','Embracing Ambiguity'], answer:2, explanation:'The 7 Core Values of UCD are: Empathy, Optimism, Iteration, Creative Confidence, Belief in Making, Embracing Ambiguity, and Learning from Failure. Perfectionism is not one of them.' },
+  { type:'mc', q:'How many phases are there in the UCD model described in this module?', choices:['4','5','6','7'], answer:2, explanation:'There are 6 phases of UCD: (1) Specify context and users\' needs, (2) Specify business requirements, (3) Build design solutions, (4) Evaluate designs with usability testing, (5) Implementation, and (6) Deployment.' },
+  { type:'mc', q:'Which phase of UCD involves developing and delivering the product?', choices:['Evaluation','Deployment','Implementation','Design'], answer:2, explanation:'Phase 5 is Implementation — where the product is developed and delivered. Phase 6 is Deployment, where the final product is evaluated as consumer needs change.' },
+  { type:'mc', q:'What does "Evaluation Driven Design" mean as a Responsive Principle of UCD?', choices:['Designing quickly without testing','Testing only at the end','Using test results to guide design decisions','Evaluating competitor products'], answer:2, explanation:'"Evaluation Driven Design" is one of the Responsive Principles of UCD. It means that evaluation and testing results are used to actively guide and improve design decisions throughout the process.' },
+  { type:'mc', q:'According to the Key Aspects of UCD, when should users be involved?', choices:['Only at the end for feedback','Only during testing','Early and actively throughout the process','Only when problems arise'], answer:2, explanation:'One of the Key Aspects of UCD is the "early focus on users" and the "active involvement of users." Users should be engaged from the start, not just at the end.' },
+  { type:'mc', q:'What does ISO 13407 define in relation to UCD?', choices:['Web accessibility standards','Four essential activities in UCD','Six phases of deployment','Coding standards for interfaces'], answer:1, explanation:'ISO 13407 defines the Four Essential Activities in UCD: (1) Requirements gathering, (2) Requirements specification, (3) Design, and (4) Evaluation.' },
+  { type:'mc', q:'Which activity in ISO 13407 involves "understanding and specifying the context of use"?', choices:['Evaluation','Design','Requirements specification','Requirements gathering'], answer:3, explanation:'According to ISO 13407, "Requirements gathering" is the activity that involves understanding and specifying the context of use — the first of the four essential UCD activities.' },
+  { type:'mc', q:'UCD is described as a methodology where every decision is based on:', choices:['Budget constraints','User needs and feedback','Developer expertise','Market trends'], answer:1, explanation:'UCD Methodology keeps the user always at the center. Every decision — from design to implementation — is based on user needs and user feedback, not on developer preferences or market trends.' },
+  { type:'mc', q:'The phrase "UCD has a human bias in its DNA" means:', choices:['UCD only works for humans, not AI','UCD always starts with people — their needs and real-life problems','UCD uses biological data for design','UCD is biased against companies'], answer:1, explanation:'This phrase means UCD is fundamentally human-first. It starts with people — their needs, their feelings (hopes & fears), and their real-life problems. The "human bias" is built into its very foundation.' },
+  { type:'id', q:'What is the term for designing a system or product based on what USERS need, not just what the developer wants?', answer:'user-centered design', alt:['ucd','user centered design'], explanation:'User-Centered Design (UCD) is the practice of building systems around what users actually need. It is the opposite of technology-driven or company-driven design.' },
+  { type:'id', q:'Name the 2nd step in the UCD Process (after "Understand the users").', answer:'generate ideas', alt:['generate','ideation','idea generation'], explanation:'The UCD process is: Understand → Generate Ideas → Create Prototypes → Test with Users → Improve. After understanding the users, the team generates creative ideas to solve their identified needs.' },
+  { type:'id', q:'Who is the pioneer of User-Centered Design described in the module?', answer:'donald norman', alt:['donald','norman'], explanation:'Donald Norman popularized the concept of User-Centered Design. His principle states: "Good design = based on the NEEDS and WANTS of USERS."' },
+  { type:'id', q:'What core value of UCD involves understanding users\' feelings, hopes, and fears?', answer:'empathy', alt:[], explanation:'Empathy is the first and most foundational core value of UCD. It means genuinely understanding users\' feelings, motivations, hopes, and fears to design solutions that truly serve them.' },
+  { type:'id', q:'In UCD, what is the term for the cycle of designing, testing, and modifying a prototype repeatedly?', answer:'iterative design', alt:['iteration','iterative cycle','iterative'], explanation:'Iterative design (or Iteration) is a core value and key characteristic of UCD. It means the design process is repeated in cycles — design, test, modify — until the best solution is reached.' },
+  { type:'id', q:'What is the 6th phase of UCD where the final product is evaluated as consumer needs change?', answer:'deployment', alt:[], explanation:'Phase 6 is Deployment — the final product is released and evaluated over time as consumer needs evolve. This is different from Phase 5 (Implementation), which is about developing and delivering the product.' },
+  { type:'id', q:'What ISO standard defines the four essential activities of UCD?', answer:'iso 13407', alt:['13407'], explanation:'ISO 13407 is the international standard that defines the human-centered design process for interactive systems. It outlines four essential activities: Requirements gathering, Requirements specification, Design, and Evaluation.' },
+  { type:'id', q:'What UCD activity involves "carrying out user-based assessment of the site"?', answer:'evaluation', alt:['evaluate'], explanation:'Evaluation is the 4th essential activity in ISO 13407. It involves carrying out user-based assessments to check whether the design meets user needs and requirements.' },
+];
+
+let questions=[], idx=0, score=0, wrong=0, answered=false;
+function shuffle(a){ return a.sort(()=>Math.random()-0.5); }
+function start(){ questions=shuffle([...QUESTIONS]); idx=0; score=0; wrong=0; answered=false; updateStats(); render(); }
+
+function updateStats(){
+  const total=questions.length, pct=Math.round(idx/total*100);
+  document.getElementById('s-q').textContent=Math.min(idx+1,total);
+  document.getElementById('s-c').textContent=score;
+  document.getElementById('s-w').textContent=wrong;
+  document.getElementById('s-t').textContent=total;
+  document.getElementById('prog-label').textContent=idx+' / '+total;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('pbar').style.width=pct+'%';
+}
+
+function render(){
+  if(idx>=questions.length){ showResults(); return; }
+  const q=questions[idx]; answered=false;
+  document.getElementById('actions').style.display='none';
+  if(q.type==='mc') renderMC(q); else renderID(q);
+  updateStats();
+}
+
+function renderMC(q){
+  const shuffled=shuffle(q.choices.map((c,i)=>({c,i})));
+  document.getElementById('q-area').innerHTML=`
+    <div class="q-card">
+      <span class="q-type-pill pill-mc"><i class="ti ti-list-check" aria-hidden="true"></i> Multiple Choice</span>
+      <p class="q-text">${q.q}</p>
+      <div class="choices">
+        ${shuffled.map(({c,i})=>`<button class="choice" data-idx="${i}" onclick="pickMC(this,${q.answer})">${c}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb"></div>
+      <div class="explanation" id="exp"><i class="ti ti-bulb" aria-hidden="true"></i> <strong>Explanation:</strong> ${q.explanation}</div>
+    </div>`;
+}
+
+function pickMC(btn,correct){
+  if(answered) return; answered=true;
+  const chosen=parseInt(btn.dataset.idx);
+  document.querySelectorAll('.choice').forEach(b=>{
+    b.disabled=true;
+    const bi=parseInt(b.dataset.idx);
+    if(bi===correct) b.classList.add('correct');
+    else if(bi===chosen&&chosen!==correct) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('fb');
+  if(chosen===correct){ score++; fb.className='feedback correct'; fb.innerHTML='<i class="ti ti-check" aria-hidden="true"></i> Correct!'; }
+  else { wrong++; fb.className='feedback wrong'; fb.innerHTML='<i class="ti ti-x" aria-hidden="true"></i> Incorrect. The correct answer is highlighted in green.'; }
+  document.getElementById('exp').classList.add('show');
+  document.getElementById('actions').style.display='block'; updateStats();
+}
+
+function renderID(q){
+  document.getElementById('q-area').innerHTML=`
+    <div class="q-card">
+      <span class="q-type-pill pill-id"><i class="ti ti-pencil" aria-hidden="true"></i> Identification</span>
+      <p class="q-text">${q.q}</p>
+      <div class="id-row">
+        <input class="id-input" id="id-ans" type="text" placeholder="Type your answer..." autocomplete="off" onkeydown="if(event.key==='Enter')checkID()"/>
+        <button class="check-btn" id="chk-btn" onclick="checkID()">Check</button>
+      </div>
+      <p class="hint">Case-insensitive · Key terms accepted</p>
+      <div class="feedback" id="fb"></div>
+      <div class="explanation" id="exp"><i class="ti ti-bulb" aria-hidden="true"></i> <strong>Explanation:</strong> ${q.explanation}</div>
+    </div>`;
+  document.getElementById('id-ans').focus();
+}
+
+function checkID(){
+  if(answered) return;
+  const q=questions[idx], inp=document.getElementById('id-ans'), val=inp.value.trim().toLowerCase();
+  if(!val) return;
+  answered=true; inp.disabled=true; document.getElementById('chk-btn').disabled=true;
+  const accepted=[q.answer,...(q.alt||[])];
+  const correct=accepted.some(a=>val===a||val.includes(a)||a.includes(val));
+  const fb=document.getElementById('fb');
+  const display=q.answer.charAt(0).toUpperCase()+q.answer.slice(1);
+  if(correct){ score++; inp.classList.add('correct'); fb.className='feedback correct'; fb.innerHTML=`<i class="ti ti-check" aria-hidden="true"></i> Correct! <strong>${display}</strong>`; }
+  else { wrong++; inp.classList.add('wrong'); fb.className='feedback wrong'; fb.innerHTML=`<i class="ti ti-x" aria-hidden="true"></i> Incorrect. Answer: <strong>${display}</strong>`; }
+  document.getElementById('exp').classList.add('show');
+  document.getElementById('actions').style.display='block'; updateStats();
+}
+
+function next(){ idx++; render(); }
+
+function showResults(){
+  const total=questions.length, pct=Math.round(score/total*100);
+  document.getElementById('prog-label').textContent=total+' / '+total;
+  document.getElementById('prog-pct').textContent='100%';
+  document.getElementById('pbar').style.width='100%';
+  document.getElementById('actions').style.display='none';
+  const emoji=pct>=90?'🏆':pct>=75?'🎉':pct>=50?'📚':'💪';
+  const msg=pct>=90?'Excellent work! You have a strong grasp of User-Centered Design concepts.':
+             pct>=75?'Good job! Review a few items and you\'ll be fully ready for the exam.':
+             pct>=50?'Decent effort. A bit more review of the module will help solidify the concepts.':
+             'Keep studying! Go over Module 3 again and try once more — you\'ve got this.';
+  document.getElementById('q-area').innerHTML=`
+    <div class="results-card">
+      <div class="results-emoji">${emoji}</div>
+      <div><span class="results-score">${score}</span><span class="results-denom"> / ${total}</span></div>
+      <div class="results-pct">${pct}%</div>
+      <p class="results-msg">${msg}</p>
+      <button class="restart-btn" onclick="start()"><i class="ti ti-refresh" aria-hidden="true"></i> Retake Quiz</button>
+    </div>`;
+}
+start();
+</script>
+</body>
+</html>
